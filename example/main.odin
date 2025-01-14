@@ -1,6 +1,7 @@
 package example
 
 import tfd "../tinyfiledialogs"
+import "core:c"
 import "core:flags"
 import "core:fmt"
 import "core:os"
@@ -33,8 +34,8 @@ main :: proc() {
 		ret := tfd.messageBox("Message Box", "Message", "okcancel", "info", 0)
 		fmt.printfln("Message box response: %d", ret)
 	case .colorchooser:
-		default_color := []u8{128, 128, 128}
-		return_color := []u8{0, 0, 0}
+		default_color := []c.uchar{128, 128, 128}
+		return_color := []c.uchar{0, 0, 0}
 		ret := tfd.colorChooser(
 			"Color Picker",
 			nil,
