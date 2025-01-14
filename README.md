@@ -16,9 +16,15 @@ odin build . -out:example
 ./example -type:input
 ```
 
+## Building
+
+There are pre-built libraries available for multiple platforms. You may want to build your own, however. You can use the `build.sh` and `build.bat` files to build the libraries or as a starting point.
+
 ## Status
 
-Only tested on macOS arm64. There are Linux libraries that I built but they are completley untested. I also plan to support Windows anand I'd be happy to have help testing these platforms.
+- Tested on macOS arm64 and Windows amd64.
+- There are Linux libraries that I built but they are completley untested.
+- _Note:_ Windows UTF-16 functions are untested.
 
 ## License
 
