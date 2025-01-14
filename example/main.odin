@@ -1,109 +1,69 @@
 package example
 
 import tfd "../tinyfiledialogs"
-import "core:c"
+import "core:flags"
 import "core:fmt"
-import rl "vendor:raylib"
+import "core:os"
 
-BUTTON_WIDTH :: 140
-BUTTON_HEIGHT :: 48
-BUTTON_WIDTH_HALF :: BUTTON_WIDTH / 2
-BUTTON_HEIGHT_HALF :: BUTTON_HEIGHT / 2
-BUTTONS_START_Y :: 100
+Example_Type :: enum {
+	beep,
+	version,
+	messagebox,
+	colorchooser,
+	input,
+	openfile,
+	savefile,
+}
+
+Options :: struct {
+	type: Example_Type `usage:"Type of example to run"`,
+}
 
 main :: proc() {
-	fmt.printfln("tinyfiledialogs version: %s", tfd.version)
+	opt: Options
+	style: flags.Parsing_Style = .Odin
+	flags.parse_or_exit(&opt, os.args, style)
 
-	rl.InitWindow(800, 600, "tinyfiledialogs")
-	rl.SetTargetFPS(60)
-
-	for !rl.WindowShouldClose() {
-		rl.BeginDrawing()
-		rl.ClearBackground(rl.RAYWHITE)
-
-		if rl.GuiButton(
-			{
-				f32(rl.GetScreenWidth()) / 2 - BUTTON_WIDTH_HALF,
-				BUTTONS_START_Y,
-				BUTTON_WIDTH,
-				BUTTON_HEIGHT,
-			},
-			"Beep",
-		) {
-			tfd.beep()
-		}
-
-		// Message Box
-		if rl.GuiButton(
-			{
-				f32(rl.GetScreenWidth()) / 2 - BUTTON_WIDTH_HALF,
-				BUTTONS_START_Y + 75,
-				BUTTON_WIDTH,
-				BUTTON_HEIGHT,
-			},
-			"Message Box",
-		) {
-			ret := tfd.messageBox("Message Box", "Message", "okcancel", "info", 0)
-			fmt.printfln("Message box response: %d", ret)
-		}
-
-		// Message Box
-		if rl.GuiButton(
-			{
-				f32(rl.GetScreenWidth()) / 2 - BUTTON_WIDTH_HALF,
-				BUTTONS_START_Y + 150,
-				BUTTON_WIDTH,
-				BUTTON_HEIGHT,
-			},
-			"Input Box",
-		) {
-			ret := tfd.inputBox("Input Box", "Input", "")
-			fmt.printfln("You typed: %s", ret)
-		}
-
-		// Open file dialog
-		if rl.GuiButton(
-			{
-				f32(rl.GetScreenWidth()) / 2 - BUTTON_WIDTH_HALF,
-				BUTTONS_START_Y + 225,
-				BUTTON_WIDTH,
-				BUTTON_HEIGHT,
-			},
+	switch opt.type {
+	case .beep:
+		tfd.beep()
+	case .version:
+		fmt.printfln("tinyfiledialogs version: %s", tfd.version)
+	case .messagebox:
+		ret := tfd.messageBox("Message Box", "Message", "okcancel", "info", 0)
+		fmt.printfln("Message box response: %d", ret)
+	case .colorchooser:
+		default_color := []u8{128, 128, 128}
+		return_color := []u8{0, 0, 0}
+		ret := tfd.colorChooser(
+			"Color Picker",
+			nil,
+			raw_data(default_color),
+			raw_data(return_color),
+		)
+		fmt.printfln("You picked this color in hex: %s", ret)
+		fmt.printfln("You picked this color in rgb: %v", return_color)
+	case .input:
+		ret := tfd.inputBox("Input Box", "Input", "")
+		fmt.printfln("You typed: %s", ret)
+	case .openfile:
+		ret := tfd.openFileDialog(
 			"Open File Dialog",
-		) {
-			ret := tfd.openFileDialog(
-				"Open File Dialog",
-				nil,
-				2,
-				raw_data([]cstring{"*.png", "*.txt"}),
-				nil,
-				0,
-			)
-			fmt.printfln("You chose this file: %s", ret)
-		}
-
-		// Color picker
-		// TODO: this doesn't work yet.
-		// if rl.GuiButton(
-		// 	{
-		// 		f32(rl.GetScreenWidth()) / 2 - BUTTON_WIDTH_HALF,
-		// 		BUTTONS_START_Y + 300,
-		// 		BUTTON_WIDTH,
-		// 		BUTTON_HEIGHT,
-		// 	},
-		// 	"Color Picker",
-		// ) {
-		// 	ret := tfd.colorChooser(
-		// 		"Color Picker",
-		// 		nil,
-		// 		raw_data([]u8{0, 128, 128}),
-		// 		raw_data([]u8{0, 0, 0}),
-		// 	)
-		// 	fmt.printfln("You picked this color: %s", ret)
-		// }
-
-		rl.EndDrawing()
+			nil,
+			2,
+			raw_data([]cstring{"*.png", "*.txt"}),
+			nil,
+			0,
+		)
+		fmt.printfln("You chose this file: %s", ret)
+	case .savefile:
+		ret := tfd.saveFileDialog(
+			"Save File Dialog",
+			nil,
+			2,
+			raw_data([]cstring{"*.png", "*.txt"}),
+			nil,
+		)
+		fmt.printfln("You saved to this file: %s", ret)
 	}
-
-	rl.CloseWindow()
 }
