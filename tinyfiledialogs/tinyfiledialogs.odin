@@ -10,7 +10,7 @@ when ODIN_OS == .Darwin {
 	// TODO: this is completely untested.
 	foreign import lib "./linux/tinyfiledialogs.a"
 } else when ODIN_OS == .Windows {
-	#panic("Windows not supported yet")
+	foreign import lib {"./windows/tinyfiledialogs.lib", "system:User32.lib", "system:Shell32.lib", "system:Comdlg32.lib", "system:Ole32.lib"}
 }
 
 
@@ -35,7 +35,7 @@ foreign lib {
 	selectFolderDialog :: proc(aTitle: cstring, aDefaultPath: cstring) -> cstring ---
 	colorChooser :: proc(aTitle: cstring, aDefaultHexRGB: cstring, aDefaultRGB: [^]c.uchar, aoResultRGB: [^]c.uchar) -> cstring ---
 
-	// TODO: this is completely and utterly untested.
+	// TODO: Need to test utf16 functions on Windows.
 	when ODIN_OS == .Windows {
 		winUtf8: c.int
 
