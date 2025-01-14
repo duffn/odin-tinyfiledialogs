@@ -9,7 +9,6 @@ when ODIN_OS == .Darwin {
 } else when ODIN_OS == .Linux {
 	// TODO: this is completely untested.
 	foreign import lib "./linux/tinyfiledialogs.a"
-
 } else when ODIN_OS == .Windows {
 	#panic("Windows not supported yet")
 }
@@ -34,7 +33,7 @@ foreign lib {
 	saveFileDialog :: proc(aTitle: cstring, aDefaultPathAndOrFile: cstring, aNumOfFilterPatterns: c.int, aFilterPatterns: [^]cstring, aSingleFilterDescription: cstring) -> cstring ---
 	openFileDialog :: proc(aTitle: cstring, aDefaultPathAndOrFile: cstring, aNumOfFilterPatterns: c.int, aFilterPatterns: [^]cstring, aSingleFilterDescription: cstring, aAllowMultipleSelects: c.int) -> cstring ---
 	selectFolderDialog :: proc(aTitle: cstring, aDefaultPath: cstring) -> cstring ---
-	colorChooser :: proc(aTitle: cstring, aDefaultHexRGB: cstring, aDefaultRGB: [^]u8, aoResultRGB: [^]u8) -> cstring ---
+	colorChooser :: proc(aTitle: cstring, aDefaultHexRGB: cstring, aDefaultRGB: [^]c.uchar, aoResultRGB: [^]c.uchar) -> cstring ---
 
 	// TODO: this is completely and utterly untested.
 	when ODIN_OS == .Windows {
@@ -53,6 +52,6 @@ foreign lib {
 		saveFileDialogW :: proc(aTitle: [^]win32.wchar_t, aDefaultPathAndOrFile: [^]win32.wchar_t, aNumOfFilterPatterns: c.int, aFilterPatterns: [^][^]win32.wchar_t, aSingleFilterDescription: [^]win32.wchar_t) -> [^]win32.wchar_t ---
 		openFileDialogW :: proc(aTitle: [^]win32.wchar_t, aDefaultPathAndOrFile: [^]win32.wchar_t, aNumOfFilterPatterns: c.int, aFilterPatterns: [^][^]win32.wchar_t, aSingleFilterDescription: [^]win32.wchar_t, aAllowMultipleSelects: c.int) -> [^]win32.wchar_t ---
 		selectFolderDialogW :: proc(aTitle: [^]win32.wchar_t, aDefaultPath: [^]win32.wchar_t) -> [^]win32.wchar_t ---
-		colorChooserW :: proc(aTitle: [^]win32.wchar_t, aDefaultHexRGB: [^]win32.wchar_t, aDefaultRGB: [3]c.uchar, aoResultRGB: [3]c.uchar) -> win32.wchar_t ---
+		colorChooserW :: proc(aTitle: [^]win32.wchar_t, aDefaultHexRGB: [^]win32.wchar_t, aDefaultRGB: [^]c.uchar, aoResultRGB: [^]c.uchar) -> win32.wchar_t ---
 	}
 }
