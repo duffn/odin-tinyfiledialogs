@@ -10,11 +10,13 @@
 
 ```
 cd example
-odin build . -out:example
-./example -help
+odin build example/main.odin -out:examples -file
+./examples -help
 # This is a single example. See the enum in `example/main.odin` for all types.
-./example -type:input
+./examples -type:input
 ```
+
+- If you're on Windows, you can also run the `example/main_windows.odin` examples to test the UTF-16 versions of the functions.
 
 ## Building
 
@@ -24,7 +26,6 @@ There are pre-built libraries available for multiple platforms. You may want to 
 
 - Tested on macOS arm64 and Windows amd64.
 - There are Linux libraries that I built but they are completley untested.
-- _Note:_ Windows UTF-16 functions are untested.
 
 ## License
 
