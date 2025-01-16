@@ -6,11 +6,16 @@
 
 - Copy the `tinyfiledialogs` directory to your project.
 - Import `tinyfiledialogs` and use the bindings.
-- See the `example` directory for a simple example.
+- There's an example desktop app that you can run with `odin run example/raylib.odin -file`.
+
+![odin-tinyfiledialogs desktop example](desktop-example.png)
+
+- Or, if you prefer, there are some command line examples that you can run, too.
 
 ```
-cd example
+- See the `example` directory for a simple example.
 odin build example/main.odin -out:examples -file
+# Or examples.exe on Windows
 ./examples -help
 # This is a single example. See the enum in `example/main.odin` for all types.
 ./examples -type:input
